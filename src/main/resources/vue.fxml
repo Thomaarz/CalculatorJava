@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.awt.TextField?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <Button fx:id="validRequete" layoutX="422.0" layoutY="61.0" mnemonicParsing="false" onAction="#calculate" text="Button" />
+      <Label fx:id="reponse" layoutX="122.0" layoutY="130.0" prefHeight="31.0" prefWidth="88.0" text="Label" />
+      <TextField fx:id="requete" layoutX="117.0" layoutY="61.0" />
+   </children>
+</Pane>
