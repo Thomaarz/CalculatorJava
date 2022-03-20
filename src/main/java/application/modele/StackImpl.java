@@ -1,8 +1,11 @@
+package application.modele;
+
 import java.util.Stack;
 
-class StackImpl {
+public class StackImpl {
   
   public int postfixToEvaluation(String s) {
+	  System.out.println("s = "+ s);
     Stack<Integer> st = new Stack<Integer>();
     int x = 0, y = 0;
     char ch[] = s.toCharArray();
@@ -10,8 +13,12 @@ class StackImpl {
       if(c >= '0' && c <= '9') {
         st.push((int)(c - '0'));
       } else {
+    	  
         y = st.pop();
         x = st.pop();
+        System.out.println(x);
+        System.out.println(y);
+        System.out.println("--------------------------------");
         switch(c) {
           case '+':
             st.push(x+y);
