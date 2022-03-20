@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import application.data.CData;
 import application.modele.StackImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 public class Controller implements Initializable {
+
+    private CData data;
 
     @FXML
     private Label reponse;
@@ -35,57 +38,41 @@ public class Controller implements Initializable {
 
     private StackImpl stackImpl;
     
-    private ArrayList<String> historique;
-    
     @FXML
     void calculate(ActionEvent event) {
-        //2+(2+9-9)
-        System.out.println("calculate");
-        String requete = getRequete();
+        String requete = this.requete.getText();
         String rep = this.stackImpl.infixToPostfix(requete);
         int reponse = this.stackImpl.postfixToEvaluation(rep);
         afficheReponse(reponse);
-        this.historique.add(requete +" = "+ Integer.toString(reponse)) ;
-        historique();
+
+        // Ajouter le calcul dans l'historique
+        data.getHistorique().add(reponse + " = " + reponse);
+
+        // Rafraichir l'historique
+        updateHistorique();
 
     }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
+
+        // Initialiser les données
+        this.data = new CData();
+
         this.reponse.setText("");
         this.validRequete = new Button();
         this.stackImpl = new StackImpl();
-        this.historique = new ArrayList<String>();
-        
     }
-
-    public String getRequete() {
-        return this.requete.getText();
-    }
-
 
     public void afficheReponse(Integer i) {
-        this.reponse.setText("La r�ponse est : "+Integer.toString(i));
+        reponse.setText("La réponse est : " + i);
     }
     
-    public void historique() {
-    	for(int i=0; i < this.historique.size();i++) {
-    		Label reponse = new Label(this.historique.get(i));
-			System.out.println("fu");
-			
-				reponse.setLayoutX(8);
-			
-			
-				
-
-			
-			
-			this.pane.getChildren().add(reponse);
-			if(i>=10) {
-				break;
-
-			}
+    public void updateHistorique() {
+    	for(int i = 0; i < Math.min(data.getHistorique().size(), 10); i++) {
+    		Label reponse = new Label(data.getHistorique().get(i));
+			reponse.setLayoutX(8);
+			pane.getChildren().add(reponse);
     	}
     }
 }
