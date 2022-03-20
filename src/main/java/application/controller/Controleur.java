@@ -1,19 +1,17 @@
-package application.Controleur;
+package application.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import application.Modele.Calculator;
-import application.Modele.StackImpl;
+import application.modele.Calculator;
+import application.modele.StackImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 	
 public class Controleur implements Initializable{
@@ -111,7 +109,7 @@ public class Controleur implements Initializable{
 
 
     public void afficheReponse(Integer i) {
-        this.reponse.setText("La réponse est : "+Integer.toString(i));
+        this.reponse.setText("La rï¿½ponse est : "+Integer.toString(i));
     }
     
     public void historique() {
@@ -147,13 +145,13 @@ public class Controleur implements Initializable{
     }
     
     public void initAide() {
-    	this.textAide.setText("	Symboles autorisés :  \n\n "
+    	this.textAide.setText("	Symboles autorisï¿½s :  \n\n "
     			+ "		Multiplication : * \n "
     			+ "		Addition : + \n "
     			+ "		Soustraction : - \n "
     			+ "		Division : / \n "
-    			+ "		Parenthèses ( ) \n "
-    			+ "		Chiffre 0 à 9");
+    			+ "		Parenthï¿½ses ( ) \n "
+    			+ "		Chiffre 0 ï¿½ 9");
     }
     
 }
