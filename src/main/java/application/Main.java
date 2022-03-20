@@ -11,10 +11,12 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Pane root = FXMLLoader.load(getClass().getResource("vue.fxml"));
-			Scene scene = new Scene(root,600,300); 
+			Pane root = FXMLLoader.load(getClass().getClassLoader().getResource("vue.fxml"));
+			Scene scene = new Scene(root,600,410);
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			primaryStage.setTitle("Calculatrice");
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		} 
