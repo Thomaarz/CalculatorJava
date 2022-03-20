@@ -71,7 +71,7 @@ public class Controleur implements Initializable {
         afficheReponse(reponse);
 
         // Ajouter le calcul dans l'historique
-        data.getHistorique().add(reponse + " = " + reponse);
+        data.getHistorique().add(requete + " = " + reponse);
 
         // Rafraichir l'historique
         historique();
@@ -115,7 +115,7 @@ public class Controleur implements Initializable {
 
 
     public void afficheReponse(Integer i) {
-        this.reponse.setText("La r�ponse est : "+Integer.toString(i));
+        this.reponse.setText("La réponse est : "+Integer.toString(i));
     }
     
     public void historique() {
@@ -151,13 +151,13 @@ public class Controleur implements Initializable {
     }
     
     public void initAide() {
-    	this.textAide.setText("	Symboles autoris�s :  \n\n "
+    	this.textAide.setText("	Symboles autorisés :  \n\n "
     			+ "		Multiplication : * \n "
     			+ "		Addition : + \n "
     			+ "		Soustraction : - \n "
     			+ "		Division : / \n "
-    			+ "		Parenth�ses ( ) \n "
-    			+ "		Chiffre 0 � 9");
+    			+ "		Parenthéses ( ) \n "
+    			+ "		Chiffre 0 à 9");
     }
     
 }
