@@ -69,7 +69,7 @@ public class Controleur implements Initializable{
         String rep = this.cal.infixToPostfix(requete);
         int reponse = this.cal.postfixToEvaluation(rep);
         afficheReponse(reponse);
-        this.historique.add( requete +" = "+ Integer.toString(reponse)) ;
+        this.historique.add( requete + " = " + reponse);
         historique();
 
     }
