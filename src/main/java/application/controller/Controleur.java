@@ -1,9 +1,9 @@
 package application.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import application.data.CData;
 import application.modele.Calculator;
 import application.modele.StackImpl;
 import javafx.event.ActionEvent;
@@ -14,7 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 	
-public class Controleur implements Initializable{
+public class Controleur implements Initializable {
+
+    private CData data;
 
     @FXML
     private Label reponse;
@@ -51,8 +53,6 @@ public class Controleur implements Initializable{
 
     private StackImpl stackImpl;
     
-    private ArrayList<String> historique;
-    
     @FXML
     private Pane paneHistorique;
 
@@ -69,7 +69,11 @@ public class Controleur implements Initializable{
         String rep = this.cal.infixToPostfix(requete);
         int reponse = this.cal.postfixToEvaluation(rep);
         afficheReponse(reponse);
-        this.historique.add( requete + " = " + reponse);
+
+        // Ajouter le calcul dans l'historique
+        data.getHistorique().add(reponse + " = " + reponse);
+
+        // Rafraichir l'historique
         historique();
 
     }
@@ -93,11 +97,13 @@ public class Controleur implements Initializable{
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
+
+        // Initialiser les données
+        this.data = new CData();
+
         this.reponse.setText("");
         this.validRequete = new Button();
         this.stackImpl = new StackImpl();
-        this.historique = new ArrayList<String>();
         this.paneAide.setVisible(false);    
         initAide();
         this.cal = new Calculator();
@@ -115,8 +121,8 @@ public class Controleur implements Initializable{
     public void historique() {
     	int compt2 =0;
     	int compt3 = 0;
-    	for(int i=0; i < this.historique.size();i++) {
-    		Label reponse = new Label(this.historique.get(i));
+    	for(int i=0; i < data.getHistorique().size();i++) {
+    		Label reponse = new Label(data.getHistorique().get(i));
 
 			if(i<7) {
 				reponse.setLayoutX(8);
@@ -136,7 +142,7 @@ public class Controleur implements Initializable{
 			this.paneHistorique.getChildren().add(reponse);
 
 			if(i>=21) {
-				this.historique.clear();
+                data.getHistorique().clear();
 				this.paneHistorique.getChildren().clear();
 				this.paneHistorique.getChildren().add(titreHistorique);
 				i=0;
