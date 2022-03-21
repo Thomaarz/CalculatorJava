@@ -25,7 +25,27 @@ public class Calculateur {
     }
 
     private void addCalcul(String calcul) {
+        StringBuilder n1 = new StringBuilder();
+        StringBuilder n2 = new StringBuilder();
+        Operator operator = null;
+        boolean test = false;
 
+        for (String c : calcul.split("")) {
+            Operator o = new Operator(c.charAt(0));
+
+            if (o.getPriority() > 0) {
+                operator = o;
+                test = true;
+            } else if (!test) {
+                n1.append(c);
+            } else {
+                n2.append(c);
+            }
+        }
+
+        if (operator != null) {
+            addCalcul(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()), operator);
+        }
     }
 
     private int calculer() {
@@ -36,6 +56,18 @@ public class Calculateur {
             result += operator.result(nombres.pop(), nombres.pop());
         }
         return result;
+    }
+
+    private void test() {
+        for (Integer i : nombres) {
+            System.out.print(i);
+        }
+        System.out.print(" ");
+
+        for (Operator o : operators) {
+            System.out.print(o.getSymbol());
+        }
+        System.out.println();
     }
 
     @Override
@@ -49,7 +81,9 @@ public class Calculateur {
     public static void main(String[] args) {
         Calculateur calculateur = new Calculateur();
 
-        calculateur.addCalcul(1, 2, new Operator('+'));
+        calculateur.addCalcul("10*5");
+        calculateur.addCalcul("2+7");
+        calculateur.test();
         System.out.println(calculateur.calculer());
 
     }
