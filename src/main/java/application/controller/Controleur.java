@@ -4,8 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.data.CData;
+import application.modele.Calculator;
 import application.modele.StackImpl;
-import application.modele.Transformer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,30 +51,27 @@ public class Controleur implements Initializable {
     @FXML
     private Label titreHistorique;
 
-
+    private StackImpl stackImpl;
+    
     @FXML
     private Pane paneHistorique;
 
     
+    private Calculator cal;
     @FXML
     private Pane paneRecherche;
-
-    private Transformer transformer;
+    
     @FXML
     void calculate(ActionEvent event) {
         //2+(2+9-9)
-        System.out.println("***********************************");
         System.out.println("calculate");
-
         String requete = getRequete();
-        String rep = this.transformer.infixToPostfix(requete);
-        System.out.println("controleur " + rep +'.');
-
-        int reponse = this.transformer.postfixToEvaluation(rep);
+        String rep = this.cal.infixToPostfix(requete);
+        int reponse = this.cal.postfixToEvaluation(rep);
         afficheReponse(reponse);
 
         // Ajouter le calcul dans l'historique
-        data.getHistorique().add(requete + " = " + reponse);
+        data.getHistorique().add(reponse + " = " + reponse);
 
         // Rafraichir l'historique
         historique();
@@ -106,20 +103,19 @@ public class Controleur implements Initializable {
 
         this.reponse.setText("");
         this.validRequete = new Button();
-        this.paneAide.setVisible(false);
+        this.stackImpl = new StackImpl();
+        this.paneAide.setVisible(false);    
         initAide();
-        transformer = new Transformer();
+        this.cal = new Calculator();
     }
 
     public String getRequete() {
-        System.out.println(this.requete.getText());
         return this.requete.getText();
-
     }
 
 
     public void afficheReponse(Integer i) {
-        this.reponse.setText("La réponse est : "+Integer.toString(i));
+        this.reponse.setText("La r�ponse est : "+Integer.toString(i));
     }
     
     public void historique() {
@@ -155,13 +151,13 @@ public class Controleur implements Initializable {
     }
     
     public void initAide() {
-    	this.textAide.setText("	Symboles autorises :  \n\n "
+    	this.textAide.setText("	Symboles autoris�s :  \n\n "
     			+ "		Multiplication : * \n "
     			+ "		Addition : + \n "
     			+ "		Soustraction : - \n "
     			+ "		Division : / \n "
-    			+ "		Parentheses ( ) \n "
-    			+ "		Chiffre 0 a 9");
+    			+ "		Parenth�ses ( ) \n "
+    			+ "		Chiffre 0 � 9");
     }
     
 }
