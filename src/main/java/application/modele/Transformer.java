@@ -10,8 +10,7 @@ public class Transformer {
     private Stack<Integer> integerStack;
     private Stack<Operator> operatorStack;
 
-    public Transformer(){
-
+    public Transformer() {
         integerStack =  new Stack<Integer>();
         operatorStack = new Stack<Operator>();
         calculator = new Calculator();
@@ -27,30 +26,30 @@ public class Transformer {
             char c = requete.charAt(i);
 
             //check if char is operator
-            if(calculator.priority(c)>0){
-                while(!operatorStack.isEmpty() && calculator.priority(operatorStack.peek().getSymbol())>= calculator.priority(c)){
+            if (calculator.priority(c) > 0) {
+                while (!operatorStack.isEmpty() && calculator.priority(operatorStack.peek().getSymbol()) >= calculator.priority(c)) {
                     char pa = operatorStack.pop().getSymbol();
                     System.out.println("ajout " + pa);
                     postfix.append(pa);
                 }
                 operatorStack.push(new Operator(c));
-            }else if(c==')'){
+            } else if (c == ')') {
                 Operator x = operatorStack.pop();
-                while(x.getSymbol()!='('){
+                while (x.getSymbol() != '(') {
                     System.out.println("ajout " + x.getSymbol());
 
                     postfix.append(x.getSymbol());
                     x = operatorStack.pop();
                 }
-            }else if(c=='('){
+            } else if (c == '('){
                 operatorStack.push(new Operator(c));
-            }else{
+            } else {
                 System.out.println(c);
                 postfix.append(c);
             }
         }
-        for (int i = 0; i <=operatorStack.size() ; i++) {
-            if(!operatorStack.isEmpty()){
+        for (int i = 0; i <= operatorStack.size(); i++) {
+            if (!operatorStack.isEmpty()) {
                 char pa =  operatorStack.pop().getSymbol();
                 System.out.println("ajout " + pa);
 

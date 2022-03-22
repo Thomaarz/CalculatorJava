@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.data.CData;
-import application.modele.StackImpl;
 import application.modele.Transformer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,6 +59,7 @@ public class Controleur implements Initializable {
     private Pane paneRecherche;
 
     private Transformer transformer;
+
     @FXML
     void calculate(ActionEvent event) {
         //2+(2+9-9)
@@ -117,9 +117,8 @@ public class Controleur implements Initializable {
 
     }
 
-
     public void afficheReponse(Integer i) {
-        this.reponse.setText("La réponse est : "+Integer.toString(i));
+        this.reponse.setText("La réponse est : " + i);
     }
 
     public void historique() {
