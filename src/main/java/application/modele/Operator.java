@@ -7,7 +7,7 @@ public class Operator {
 	
 	public Operator(char symbol) {
 		this.symbol = symbol;
-		this.priority = symbol == '+' || symbol == '-' ? 1 : symbol == '*' || symbol == '/' ? 2 : 0;
+		this.priority = symbol == '+' || symbol == '-' ? 1 : symbol == '*' || symbol == '/' || symbol == '(' || symbol == ')' ? 2 : 0;
 	}
 
 	public char getSymbol() {

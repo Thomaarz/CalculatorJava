@@ -3,90 +3,78 @@ package application.modele;
 import java.util.Stack;
 
 public class Calculator {
-	
-	public String infixToPostfix(String s) {
-	    Stack<Operator> st = new Stack<Operator>();
-	    String postfix = "";
-	    char ch[] = s.toCharArray();
-	    
-	    for(char c: ch) {
-	    	if(c >= '0' && c <= '9') {
-	            postfix = postfix + c;
-   	
-	    	}
-	    	else if (c == '(') {
-	            st.push(new Operator(c));
-	          } else if (c == ')') {
-	            while(!st.isEmpty()) {
-	              Operator t = st.pop();
-	              if(t.getSymbol() != '(') {
-	                postfix = postfix + t.getSymbol();
-	              } else {
-	                break;
-	              }
-	            }
-	          }else if(c == '+' ||c == '-' ||c == '*' ||c == '/') {
-	    		if(st.isEmpty()) {
-	    	          st.push(new Operator(c));
-	    	    }else {
-	    	          while(!st.isEmpty()) {
-	    	              Operator t = st.pop();
-	    	              if(t.getSymbol() == '(') {
-	    	                st.push(t);
-	    	                break;
-	    	              } else if(t.getSymbol() == '+' || t.getSymbol() == '-' || t.getSymbol() == '*' || t.getSymbol() == '/') {
-	    	                if(t.getPriority() <  new Operator(c).getPriority()) {
-	    	                  st.push(t);
-	    	                  break;
-	    	                } else {
-	    	                  postfix = postfix + t.getSymbol();
-	    	                }
-	    	              }
-	    	            }
-	    	            st.push(new Operator(c));
-	    	          }
-	    	}
-	      
-	  }
-	    while(!st.isEmpty()) {
-	        postfix = postfix + st.pop().getSymbol();
-	      }
-	    return postfix;
 
-	  
-	}  
-	
-	public int postfixToEvaluation(String s) {
-		  System.out.println("s = "+ s);
-	    Stack<Integer> st = new Stack<Integer>();
-	    int x = 0, y = 0;
-	    char ch[] = s.toCharArray();
-	    for(char c: ch) {
-	      if(c >= '0' && c <= '9') {
-	        st.push((int)(c - '0'));
-	      } else {
-	    	  
-	        y = st.pop();
-	        x = st.pop();
-	        System.out.println(x);
-	        System.out.println(y);
-	        System.out.println("--------------------------------");
-	        switch(c) {
-	          case '+':
-	            st.push(x+y);
-	            break;
-	          case '-':
-	            st.push(x-y);
-	            break;
-	          case '*':
-	            st.push(x*y);
-	            break;
-	          case '/':
-	            st.push(x/y);
-	            break;
-	        }
-	      }
-	    }
-	    return st.pop();
-	  }
+	public Calculator(){}
+
+	public int comparePriority(Operator operator1, Operator operator2){
+		//retourne 1 si operateur1 est plus important ou à la meme importance que operateur2
+		if(operator1.getPriority() >= operator2.getPriority()){
+			return 1;
+		}
+		return 2;
+	}
+
+	public int priority(char c){
+		switch (c){
+			case '+':
+			case '-':
+				return 1;
+			case '*':
+			case '/':
+				return 2;
+			case '^':
+				return 3;
+		}
+		return -1;
+	}
+
+	public int calculate(Operator operator,int firstArg, int secondArg){
+		switch(operator.getSymbol()) {
+			case '+':
+				return firstArg + secondArg;
+			case '-':
+				return firstArg - secondArg;
+			case '*':
+				return firstArg * secondArg;
+			case '/':
+				return firstArg / secondArg;
+		}
+
+		return 0;
+	}
+
+	public boolean estOperator(char c){
+		if(c == '+' ||c == '-' ||c == '*' ||c == '/' || c== '(' || c==')'){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean estOperatorPasParenthese(char c){
+		if(c == '+' ||c == '-' ||c == '*' ||c == '/' ){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean estParenthese(char c){
+		if(c == '(' || c == ')'){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean estChiffre(char c){
+		if(c >= '0' && c <= '9'){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean estInconnu(char c){
+		if(!estOperator(c) && !estChiffre(c)){
+			return true;
+		}
+		return false;
+	}
 }
