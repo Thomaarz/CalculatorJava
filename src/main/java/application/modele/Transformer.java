@@ -21,17 +21,17 @@ public class Transformer {
         System.out.println("begin infixToPostfix");
         requete = s;
 
-        String postfix = "";
+        StringBuilder postfix = new StringBuilder();
 
         for (int i = 0; i <requete.length() ; i++) {
             char c = requete.charAt(i);
 
             //check if char is operator
             if(calculator.priority(c)>0){
-                while(operatorStack.isEmpty()==false && calculator.priority(operatorStack.peek().getSymbol())>= calculator.priority(c)){
+                while(!operatorStack.isEmpty() && calculator.priority(operatorStack.peek().getSymbol())>= calculator.priority(c)){
                     char pa = operatorStack.pop().getSymbol();
                     System.out.println("ajout " + pa);
-                    postfix += pa;
+                    postfix.append(pa);
                 }
                 operatorStack.push(new Operator(c));
             }else if(c==')'){
@@ -39,15 +39,14 @@ public class Transformer {
                 while(x.getSymbol()!='('){
                     System.out.println("ajout " + x.getSymbol());
 
-                    postfix += x.getSymbol();
+                    postfix.append(x.getSymbol());
                     x = operatorStack.pop();
                 }
             }else if(c=='('){
                 operatorStack.push(new Operator(c));
             }else{
-                //character is neither operator nor (
                 System.out.println(c);
-                postfix += c;
+                postfix.append(c);
             }
         }
         for (int i = 0; i <=operatorStack.size() ; i++) {
@@ -55,16 +54,13 @@ public class Transformer {
                 char pa =  operatorStack.pop().getSymbol();
                 System.out.println("ajout " + pa);
 
-                postfix += pa;
+                postfix.append(pa);
             }
 
         }
 
-
-
         System.out.println("end infixToPostfix " +  postfix);
-        return postfix;
-
+        return postfix.toString();
     }
 
 
@@ -72,20 +68,17 @@ public class Transformer {
         System.out.println("begin postfixToEvaluation");
         System.out.println("infixToEvaluation " + s);
 
-
-        int x = 0, y = 0;
-        char ch[] = s.toCharArray();
-        String total ="";
+        int x, y;
+        char[] ch = s.toCharArray();
+        StringBuilder total = new StringBuilder();
         for(char c: ch) {
             System.out.println("infixToEvaluation loop");
             if(!calculator.estOperator(c)) {
-                total += c;
+                total.append(c);
 
                 integerStack.push(Character.getNumericValue(c));
 
-            } else if(calculator.estParenthese(c)){
-
-            }else{
+            } else if (!calculator.estParenthese(c)) {
 
                 y = integerStack.pop();
                 x = integerStack.pop();
@@ -101,10 +94,10 @@ public class Transformer {
                 integerStack.push(res);
             }
         }
-        System.out.println("total : " + total.toString()+ "    s = "+ s.toString());
-        if(total.equals(s)){
-            System.out.println(Integer.parseInt(total));
-            return Integer.parseInt(total);
+        System.out.println("total : " + total.toString() + "    s = " + s);
+        if (total.toString().equals(s)) {
+            System.out.println(Integer.parseInt(total.toString()));
+            return Integer.parseInt(total.toString());
         }
         System.out.println("end postfixToEvaluation");
 
