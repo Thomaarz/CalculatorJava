@@ -1,32 +1,34 @@
 package application.modele;
 
 
+import application.exception.RequeteException;
+
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class Transformer {
 
     private Calculator calculator;
     private String requete;
-    private Stack<Integer> integerStack;
+    private Stack<Double> doubleStack;
     private Stack<Operator> operatorStack;
 
     public Transformer(){
 
-        integerStack =  new Stack<Integer>();
+        doubleStack =  new Stack<Double>();
         operatorStack = new Stack<Operator>();
         calculator = new Calculator();
     }
 
-    public String infixToPostfix(String s)  {
+    public String infixToPostfix(String s) throws RequeteException, EmptyStackException {
         System.out.println("begin infixToPostfix");
-        requete = s;
+        requete= calculator.verifRequete(s);
 
         String postfix = "";
 
         for (int i = 0; i <requete.length() ; i++) {
             char c = requete.charAt(i);
 
-            //check if char is operator
             if(calculator.priority(c)>0){
                 while(operatorStack.isEmpty()==false && calculator.priority(operatorStack.peek().getSymbol())>= calculator.priority(c)){
                     char pa = operatorStack.pop().getSymbol();
@@ -68,12 +70,12 @@ public class Transformer {
     }
 
 
-    public int postfixToEvaluation(String s){
+    public double postfixToEvaluation(String s) throws RequeteException {
         System.out.println("begin postfixToEvaluation");
         System.out.println("infixToEvaluation " + s);
 
 
-        int x = 0, y = 0;
+        double x = 0, y = 0;
         char ch[] = s.toCharArray();
         String total ="";
         for(char c: ch) {
@@ -81,34 +83,35 @@ public class Transformer {
             if(!calculator.estOperator(c)) {
                 total += c;
 
-                integerStack.push(Character.getNumericValue(c));
+                doubleStack.push(Double.parseDouble(Character.toString(c)));
 
-            } else if(calculator.estParenthese(c)){
+            } else{
 
-            }else{
-
-                y = integerStack.pop();
-                x = integerStack.pop();
+                y = doubleStack.pop();
+                x = doubleStack.pop();
                 System.out.println("--------------------------------");
                 System.out.println(x);
                 System.out.println(y);
                 Operator op = new Operator(c);
-                int res = calculator.calculate(op, x , y);
+                double res = calculator.calculate(op, x , y);
                 System.out.println(res);
                 System.out.println("Transformer : " + x + op.getSymbol() + y +" = " + res);
                 System.out.println("--------------------------------");
 
-                integerStack.push(res);
+                doubleStack.push(res);
             }
         }
         System.out.println("total : " + total.toString()+ "    s = "+ s.toString());
+        if(s.equals("")){
+            throw new RequeteException();
+        }
         if(total.equals(s)){
             System.out.println(Integer.parseInt(total));
             return Integer.parseInt(total);
         }
         System.out.println("end postfixToEvaluation");
 
-        return integerStack.pop();
+        return doubleStack.pop();
     }
 }
 

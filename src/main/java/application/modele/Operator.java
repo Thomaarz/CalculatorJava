@@ -18,19 +18,7 @@ public class Operator {
 		return priority;
 	}
 
-	public int result(Integer n1, Integer n2) {
-		switch (symbol) {
-			case '+':
-				return n1 + n2;
-			case '-':
-				return n1 - n2;
-			case '*':
-				return n1 * n2;
-			case '/':
-				return n1 / n2;
-		}
-		return 0;
-	}
+
 
 	@Override
 	public String toString() {

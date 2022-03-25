@@ -1,10 +1,11 @@
 package application.controller;
 
 import java.net.URL;
+import java.util.EmptyStackException;
 import java.util.ResourceBundle;
 
 import application.data.CData;
-import application.modele.StackImpl;
+import application.exception.RequeteException;
 import application.modele.Transformer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class Controleur implements Initializable {
 
@@ -65,19 +67,30 @@ public class Controleur implements Initializable {
         //2+(2+9-9)
         System.out.println("***********************************");
         System.out.println("calculate");
-
         String requete = getRequete();
-        String rep = this.transformer.infixToPostfix(requete);
-        System.out.println("controleur " + rep +'.');
+        String rep = null;
 
-        int reponse = this.transformer.postfixToEvaluation(rep);
-        afficheReponse(reponse);
+        try {
 
-        // Ajouter le calcul dans l'historique
-        data.getHistorique().add(requete + " = " + reponse);
+            rep = this.transformer.infixToPostfix(requete);
 
-        // Rafraichir l'historique
-        historique();
+            System.out.println("controleur " + rep + '.');
+
+            double reponse = this.transformer.postfixToEvaluation(rep);
+            afficheReponse(reponse);
+
+            // Ajouter le calcul dans l'historique
+            data.getHistorique().add(requete + " = " + reponse);
+
+            // Rafraichir l'historique
+            historique();
+        } catch (RequeteException e) {
+            System.out.println("Erreur, requete invalid");
+            Erreur();
+        } catch (EmptyStackException f){
+            System.out.println("Erreur, requete invalid");
+            Erreur();
+        }
 
     }
 
@@ -98,6 +111,7 @@ public class Controleur implements Initializable {
         this.paneHistorique.setVisible(true);
     }
 
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
 
@@ -109,17 +123,21 @@ public class Controleur implements Initializable {
         this.paneAide.setVisible(false);
         initAide();
         transformer = new Transformer();
+
     }
 
     public String getRequete() {
-        System.out.println(this.requete.getText());
-        return this.requete.getText();
+        String s = this.requete.getText();
+        System.out.println(s);
+        return s;
 
     }
 
 
-    public void afficheReponse(Integer i) {
-        this.reponse.setText("La réponse est : "+Integer.toString(i));
+    public void afficheReponse(Double i) {
+        this.reponse.setTextFill(Color.web("#000000"));
+
+        this.reponse.setText("La réponse est : "+Double.toString(i));
     }
 
     public void historique() {
@@ -156,13 +174,20 @@ public class Controleur implements Initializable {
 
     public void initAide() {
         this.textAide.setText("	Symboles autorisés :  \n\n "
-                + "		Multiplication : * \n "
+                + "		Multiplication : *  "
                 + "		Addition : + \n "
-                + "		Soustraction : - \n "
+                + "		Soustraction : -  "
                 + "		Division : / \n "
-                + "		Parentheses ( ) \n "
-                + "		Parenthéses ( ) \n "
-                + "		Chiffre 0 à 9");
+                + "		Parentheses ( )  "
+                + "		exponentielle ^ \n\n "
+
+                + "     seuls les chiffres 0 à 9 sont acceptés ");
+    }
+
+    public void Erreur(){
+
+        this.reponse.setText("Error : requete invalid, Veuillez insérer une requete valide ");
+        this.reponse.setTextFill(Color.web("#FF0000"));
     }
 
 }
