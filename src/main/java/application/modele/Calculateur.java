@@ -1,5 +1,5 @@
 package application.modele;
-
+/*
 import java.util.LinkedList;
 
 public class Calculateur {
@@ -88,3 +88,4 @@ public class Calculateur {
 
     }
 }
+*/
