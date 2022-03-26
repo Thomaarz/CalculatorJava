@@ -1,6 +1,7 @@
 package application.modele;
 
 
+import application.exception.CalculException;
 import application.exception.RequeteException;
 
 import java.util.EmptyStackException;
@@ -14,7 +15,6 @@ public class Transformer {
     private Stack<Operator> operatorStack;
 
     public Transformer(){
-
         doubleStack =  new Stack<Double>();
         operatorStack = new Stack<Operator>();
         calculator = new Calculator();
@@ -23,94 +23,82 @@ public class Transformer {
     public String infixToPostfix(String s) throws RequeteException, EmptyStackException {
         System.out.println("begin infixToPostfix");
         requete= calculator.verifRequete(s);
-
         String postfix = "";
-
         for (int i = 0; i <requete.length() ; i++) {
             char c = requete.charAt(i);
-
             if(calculator.priority(c)>0){
-                while(operatorStack.isEmpty()==false && calculator.priority(operatorStack.peek().getSymbol())>= calculator.priority(c)){
+                while(operatorStack.isEmpty()==false &&
+                        calculator.priority(operatorStack.peek().getSymbol())>= calculator.priority(c)){
                     char pa = operatorStack.pop().getSymbol();
-                    System.out.println("ajout " + pa);
                     postfix += pa;
                 }
                 operatorStack.push(new Operator(c));
             }else if(c==')'){
                 Operator x = operatorStack.pop();
                 while(x.getSymbol()!='('){
-                    System.out.println("ajout " + x.getSymbol());
-
                     postfix += x.getSymbol();
                     x = operatorStack.pop();
                 }
             }else if(c=='('){
                 operatorStack.push(new Operator(c));
             }else{
-                //character is neither operator nor (
-                System.out.println(c);
                 postfix += c;
             }
         }
         for (int i = 0; i <=operatorStack.size() ; i++) {
             if(!operatorStack.isEmpty()){
                 char pa =  operatorStack.pop().getSymbol();
-                System.out.println("ajout " + pa);
-
                 postfix += pa;
             }
-
-        }
-
+        }System.out.println("end infixToPostfix " +  postfix);return postfix;}
 
 
-        System.out.println("end infixToPostfix " +  postfix);
-        return postfix;
-
-    }
-
-
-    public double postfixToEvaluation(String s) throws RequeteException {
+    public double postfixToEvaluation(String s) throws CalculException {
         System.out.println("begin postfixToEvaluation");
         System.out.println("infixToEvaluation " + s);
 
+        for(int i = 0; i < s.length(); i++)
+        {
+            char c = s.charAt(i);
+            if(c == ' ')
+                continue;
+            else if(Character.isDigit(c))
+            {
+                double n = 0;
+                while(Character.isDigit(c))
+                {
+                    n = n*10 + (double) (c-'0');
+                    i++;
+                    try {
+                        c = s.charAt(i);
 
-        double x = 0, y = 0;
-        char ch[] = s.toCharArray();
-        String total ="";
-        for(char c: ch) {
-            System.out.println("infixToEvaluation loop");
-            if(!calculator.estOperator(c)) {
-                total += c;
+                    }catch (StringIndexOutOfBoundsException stringIndexOutOfBoundsException){
+                        break;
+                    }
+                }
+                i--;
+                System.out.println(n + " est  push");
+                doubleStack.push(n);
+            }
 
-                doubleStack.push(Double.parseDouble(Character.toString(c)));
+            else
+            {
+                System.out.println("*************************************");
 
-            } else{
+                double val1 = doubleStack.pop();
+                System.out.println("val1 = " + val1);
+                double val2 = doubleStack.pop();
+                System.out.println("val2 = " + val2);
+                System.out.println(c);
+                calculator.verifOperation(new Operator(c), val1, val2);
 
-                y = doubleStack.pop();
-                x = doubleStack.pop();
-                System.out.println("--------------------------------");
-                System.out.println(x);
-                System.out.println(y);
-                Operator op = new Operator(c);
-                double res = calculator.calculate(op, x , y);
-                System.out.println(res);
-                System.out.println("Transformer : " + x + op.getSymbol() + y +" = " + res);
-                System.out.println("--------------------------------");
 
+                double res = calculator.calculate(new Operator(c),val1,val2);
+                System.out.println("res = " + res);
                 doubleStack.push(res);
             }
         }
-        System.out.println("total : " + total.toString()+ "    s = "+ s.toString());
-        if(s.equals("")){
-            throw new RequeteException();
-        }
-        if(total.equals(s)){
-            System.out.println(Integer.parseInt(total));
-            return Integer.parseInt(total);
-        }
         System.out.println("end postfixToEvaluation");
-
         return doubleStack.pop();
     }
 }

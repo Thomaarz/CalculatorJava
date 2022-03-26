@@ -1,13 +1,15 @@
+import application.exception.CalculException;
 import application.exception.RequeteException;
 import application.modele.Transformer;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestCalculs {
 
     @Test
-    public void testCalculs() throws RequeteException {
+    public void testCalculs() throws RequeteException, CalculException {
         Transformer transformer = new Transformer();
 
         // test infixToPostfix
@@ -15,19 +17,22 @@ public class TestCalculs {
         assertEquals("1120",transformer.infixToPostfix("1120"));
 
         //pas de parenthese
-        assertEquals("12+6+945*+55/+",transformer.infixToPostfix("1+2+6+9*45+5/5"));
+        assertEquals("1  2 + 6 + 9  45 *+ 5  5/+",transformer.infixToPostfix("1 + 2 + 6 + 9 * 45 + 5 / 5"));
 
         //1 niveau de parenthese
-        assertEquals("119+9*+",transformer.infixToPostfix("1+(1+9)*9"));
+        assertEquals("1 1  9+  9*+",transformer.infixToPostfix("1 +(1 + 9) * 9"));
 
         //1 niveau de parenthese
-        assertEquals("1019+9*9*9*+",transformer.infixToPostfix("10+(((1+9)*9)*9)*9"));
+        assertEquals("10  1  9+  9*  9*  9*+",transformer.infixToPostfix("10 + (((1 + 9) * 9) * 9) * 9"));
 
         //test postfixToEvaluation
-        assertEquals(1120,transformer.postfixToEvaluation("1120"));
+        assertEquals(757,transformer.postfixToEvaluation("100 200 + 2 / 5 * 7 +"));
+        assertEquals(91,transformer.postfixToEvaluation("1 1  9+  9*+"));
+        assertEquals(7300,transformer.postfixToEvaluation("10  1  9+  9*  9*  9*+"));
 
-        assertEquals(91,transformer.postfixToEvaluation("119+9*+"));
-       assertEquals(7291,transformer.postfixToEvaluation("119+9*9*9*+"));
+        //test exception
+
+
 
 
 

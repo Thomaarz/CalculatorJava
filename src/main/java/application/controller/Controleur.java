@@ -5,6 +5,7 @@ import java.util.EmptyStackException;
 import java.util.ResourceBundle;
 
 import application.data.CData;
+import application.exception.CalculException;
 import application.exception.RequeteException;
 import application.modele.Transformer;
 import javafx.event.ActionEvent;
@@ -64,18 +65,12 @@ public class Controleur implements Initializable {
     private Transformer transformer;
     @FXML
     void calculate(ActionEvent event) {
-        //2+(2+9-9)
-        System.out.println("***********************************");
-        System.out.println("calculate");
         String requete = getRequete();
         String rep = null;
 
         try {
 
             rep = this.transformer.infixToPostfix(requete);
-
-            System.out.println("controleur " + rep + '.');
-
             double reponse = this.transformer.postfixToEvaluation(rep);
             afficheReponse(reponse);
 
@@ -84,12 +79,15 @@ public class Controleur implements Initializable {
 
             // Rafraichir l'historique
             historique();
-        } catch (RequeteException e) {
+        } catch (RequeteException requeteException) {
             System.out.println("Erreur, requete invalid");
-            Erreur();
-        } catch (EmptyStackException f){
+            Erreur("requete invalid, Veuillez insérer une requete valide");
+        } catch (EmptyStackException emptyStackException){
             System.out.println("Erreur, requete invalid");
-            Erreur();
+            Erreur("requete invalid, Veuillez insérer une requete valide");
+        }catch (CalculException calculException){
+            System.out.println("Erreur, impossible à calculer");
+            Erreur("impossible à calculer");
         }
 
     }
@@ -173,20 +171,20 @@ public class Controleur implements Initializable {
     }
 
     public void initAide() {
-        this.textAide.setText("	Symboles autorisés :  \n\n "
+        this.textAide.setText("	Symboles autorisés :  \n\n"
                 + "		Multiplication : *  "
-                + "		Addition : + \n "
+                + "		Addition : + \n"
                 + "		Soustraction : -  "
-                + "		Division : / \n "
+                + "		Division : / \n"
                 + "		Parentheses ( )  "
-                + "		exponentielle ^ \n\n "
-
-                + "     seuls les chiffres 0 à 9 sont acceptés ");
+                + "		exponentielle ^ \n"
+                + " Veuillez insérer un espace entre chaques symboles exemple : 1 + 1 \n"
+                + " Seuls les chiffres 0 à 9 sont acceptés ");
     }
 
-    public void Erreur(){
+    public void Erreur(String s){
 
-        this.reponse.setText("Error : requete invalid, Veuillez insérer une requete valide ");
+        this.reponse.setText("Error : " + s);
         this.reponse.setTextFill(Color.web("#FF0000"));
     }
 

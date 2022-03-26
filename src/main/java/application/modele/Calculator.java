@@ -1,5 +1,6 @@
 package application.modele;
 
+import application.exception.CalculException;
 import application.exception.RequeteException;
 
 import java.util.Stack;
@@ -12,23 +13,18 @@ public class Calculator {
 
 	public String verifRequete(String s) throws RequeteException {
 		String newRequete = "";
-
 		for (int i = 0; i <s.length() ; i++) {
 			char c = s.charAt(i);
-
 			//verifcaractere inconnu
 			if(estInconnu(c)){
 				throw new RequeteException();
 			}
-
 			//requete se finit avec un operateur ou une parenthese ouvrante
 			if(estOperatorPasParenthese(s.charAt(s.length()-1)) || s.charAt(s.length()-1) == '('){
 				throw new RequeteException();
 			}
-
 			//traitement de la suivi de deux opérateur
 			if(c!=s.length()-1){
-
 				//les deux operateurs + et - cas particulier
 				if(c == '+' && s.charAt(i+1) == '-'){
 					newRequete = s.substring(0,i) + s.substring(i+1);;
@@ -43,14 +39,15 @@ public class Calculator {
 				}
 				else {
 					newRequete = s;
-				}
-			}
-
-		}
-
+				}}}
 		return newRequete;
 	}
 
+	public void verifOperation(Operator p, double x, double y) throws CalculException {
+		if(p.getSymbol() == '/' && x==0.0){
+			throw new CalculException();
+		}
+	}
 	public int comparePriority(Operator operator1, Operator operator2){
 		//retourne 1 si operateur1 est plus important ou à la meme importance que operateur2
 		if(operator1.getPriority() >= operator2.getPriority()){
@@ -67,6 +64,8 @@ public class Calculator {
 			case '*':
 			case '/':
 				return 2;
+			case '^':
+				return 3;
 
 		}
 		return -1;
@@ -75,13 +74,15 @@ public class Calculator {
 	public double calculate(Operator operator,double firstArg, double secondArg){
 		switch(operator.getSymbol()) {
 			case '+':
-				return firstArg + secondArg;
+				return secondArg + firstArg;
 			case '-':
-				return firstArg - secondArg;
+				return secondArg - firstArg;
 			case '*':
-				return firstArg * secondArg;
+				return secondArg * firstArg;
 			case '/':
-				return firstArg / secondArg;
+				return secondArg / firstArg;
+			case '^':
+				return Math.pow(secondArg, firstArg);
 
 		}
 
@@ -89,14 +90,14 @@ public class Calculator {
 	}
 
 	public boolean estOperator(char c){
-		if(c == '+' ||c == '-' ||c == '*'  ||c == '/' || c== '(' || c==')'){
+		if(c == '+' ||c == '-' ||c == '*'  ||c == '/' || c=='^' || c== '(' || c==')' || c==' '){
 			return true;
 		}
 		return false;
 	}
 
 	public boolean estOperatorPasParenthese(char c){
-		if(c == '+' ||c == '-' ||c == '*' ||c == '/' ){
+		if(c == '+' ||c == '-' || c=='^' ||c == '*' ||c == '/' ){
 			return true;
 		}
 		return false;

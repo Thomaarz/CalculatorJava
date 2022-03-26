@@ -1,5 +1,5 @@
 package application.modele;
-
+/*
 import java.util.Stack;
 
 public class StackImpl {
@@ -97,3 +97,4 @@ public class StackImpl {
 
 
 
+*/
