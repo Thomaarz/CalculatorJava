@@ -24,6 +24,7 @@ public class Transformer {
 
     public String infixToPostfix(String s) throws RequeteException, EmptyStackException {
         System.out.println("begin infixToPostfix");
+        s = s.replaceAll("(\\+|-|\\*|/)", " $1 ");
         requete= calculator.verifRequete(s);
         String postfix = "";
         for (int i = 0; i <requete.length() ; i++) {
@@ -52,12 +53,14 @@ public class Transformer {
                 char pa =  operatorStack.pop().getSymbol();
                 postfix += pa;
             }
-        }System.out.println("end infixToPostfix " +  postfix);return postfix;}
-
+        }
+        System.out.println("end infixToPostfix " +  postfix);return postfix;
+    }
 
     public double postfixToEvaluation(String s) throws CalculException {
         System.out.println("begin postfixToEvaluation");
         System.out.println("postfixToEvaluation " + s);
+        s = s.replaceAll("(\\+|-|\\*|/)", " $1 ");
         for(int i = 0; i < s.length(); i++){
             char c = s.charAt(i);
             if(c == ' ')continue;
