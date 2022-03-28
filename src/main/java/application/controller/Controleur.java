@@ -43,7 +43,7 @@ public class Controleur implements Initializable {
     private Label textAide;
 
     @FXML
-    private Button quitAide;
+    private Button quitAideButton;
 
     @FXML
     private Pane pane;
@@ -134,7 +134,6 @@ public class Controleur implements Initializable {
 
     public void afficheReponse(Double i) {
         this.reponse.setTextFill(Color.web("#000000"));
-
         this.reponse.setText("La réponse est : "+Double.toString(i));
     }
 
@@ -178,8 +177,8 @@ public class Controleur implements Initializable {
                 + "		Division : / \n"
                 + "		Parentheses ( )  "
                 + "		exponentielle ^ \n"
-                + " Veuillez insérer un espace entre chaques symboles exemple : 1 + 1 \n"
-                + " Seuls les chiffres 0 à 9 sont acceptés ");
+                + " Veuillez insérer un espace entre les symboles et les chiffres exemple : 1 + 1 \n"
+                + " Veuillez coller les symboles entre eux exemple : 1 -- 1 ");
     }
 
     public void Erreur(String s){

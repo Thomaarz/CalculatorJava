@@ -3,46 +3,78 @@ package application.modele;
 import application.exception.CalculException;
 import application.exception.RequeteException;
 
-import java.util.Stack;
 
 public class Calculator {
 
 	public Calculator(){}
 
+
+
 	public String verifRequete(String s) throws RequeteException {
-		String newRequete = "";
-		for (int i = 0; i <s.length() ; i++) {
-			char c = s.charAt(i);
+		String newRequete = s;
+		for (int i = 0; i <newRequete.length() ; i++) {
+			char c = newRequete.charAt(i);
+			System.out.println("le caractere est : " + c);
 			//verifcaractere inconnu
 			if(estInconnu(c)){
 				throw new RequeteException();
 			}
 			//requete se finit avec un operateur ou une parenthese ouvrante
-			if(estOperatorPasParenthese(s.charAt(s.length()-1)) || s.charAt(s.length()-1) == '('){
+			if(estOperatorPasParenthese(newRequete.charAt(newRequete.length()-1)) || newRequete.charAt(newRequete.length()-1) == '('){
 				throw new RequeteException();
 			}
 			//traitement de la suivi de deux opérateur
-			if(c!=s.length()-1){
+			if(c!=newRequete.length()-1){
+				System.out.println("ici");
 				//les deux operateurs + et - cas particulier
-				if(c == '+' && s.charAt(i+1) == '-'){
-					newRequete = s.substring(0,i) + s.substring(i+1);;
-					System.out.println("ancienne requete :" + s
-					+ "\n nouvelle requete : " + newRequete);
-				} else if(c == '-' && s.charAt(i+1) == '+'){
-					newRequete =  s.substring(0,i+1) + s.substring(i+2);
-					System.out.println("ancienne requete :" + s + "\n nouvelle requete : " + newRequete);
+				if(c == '+') {
+					if (newRequete.charAt(i + 1) == ' ') {
+						System.out.println("vide ");
+						i++;
+					}
+					if (newRequete.charAt(i + 1) == '-') {
+						System.out.println("ancienne requete :" + newRequete);
+						newRequete = newRequete.substring(0, i) + newRequete.substring(i + 1);
+						i++;
+						System.out.println("nouvelle requete : " + newRequete);
+					}else if(newRequete.charAt(i + 1) == '+'){
+						System.out.println("ancienne requete :" + newRequete);
+						newRequete = newRequete.substring(0, i) + newRequete.substring(i + 1);
+						i++;
+						System.out.println("nouvelle requete : " + newRequete);
+					}else {
 
+					}
+				} else if(c == '-') {
+					if (newRequete.charAt(i + 1) == ' ') {
+						i++;
+					}
+					if (newRequete.charAt(i + 1) == '-') {
+						System.out.println("ancienne requete :" + newRequete);
+						newRequete = newRequete.substring(0, i) + '+' + newRequete.substring(i+2);
+						i++;
+						System.out.println("nouvelle requete : " + newRequete);
+					}else if(newRequete.charAt(i + 1) == '+'){
+						System.out.println("ancienne requete :" + newRequete);
+						newRequete = newRequete.substring(0, i+1) + newRequete.substring(i+2);
+						i++;
+						System.out.println("nouvelle requete : " + newRequete);
+					}else {
+
+					}
 				}else if(estOperatorPasParenthese(c) && estOperatorPasParenthese(s.charAt(i+1))){
+					System.out.println("throw Exception");
 					throw new RequeteException();
 				}
 				else {
-					newRequete = s;
+					newRequete = newRequete;
+					System.out.println(" la " + newRequete);
 				}}}
 		return newRequete;
 	}
 
 	public void verifOperation(Operator p, double x, double y) throws CalculException {
-		if(p.getSymbol() == '/' && x == 0.0){
+		if(p.getSymbol() == '/' && x==0.0){
 			throw new CalculException();
 		}
 	}

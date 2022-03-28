@@ -11,7 +11,9 @@ public class Transformer {
 
     private Calculator calculator;
     private String requete;
+
     private Stack<Double> doubleStack;
+
     private Stack<Operator> operatorStack;
 
     public Transformer(){
@@ -55,23 +57,17 @@ public class Transformer {
 
     public double postfixToEvaluation(String s) throws CalculException {
         System.out.println("begin postfixToEvaluation");
-        System.out.println("infixToEvaluation " + s);
-
-        for(int i = 0; i < s.length(); i++)
-        {
+        System.out.println("postfixToEvaluation " + s);
+        for(int i = 0; i < s.length(); i++){
             char c = s.charAt(i);
-            if(c == ' ')
-                continue;
-            else if(Character.isDigit(c))
-            {
+            if(c == ' ')continue;
+            else if(calculator.estChiffre(c)){
                 double n = 0;
-                while(Character.isDigit(c))
-                {
+                while(calculator.estChiffre(c)) {
                     n = n*10 + (double) (c-'0');
                     i++;
                     try {
                         c = s.charAt(i);
-
                     }catch (StringIndexOutOfBoundsException stringIndexOutOfBoundsException){
                         break;
                     }
@@ -80,19 +76,14 @@ public class Transformer {
                 System.out.println(n + " est  push");
                 doubleStack.push(n);
             }
-
-            else
-            {
+            else{
                 System.out.println("*************************************");
-
                 double val1 = doubleStack.pop();
                 System.out.println("val1 = " + val1);
                 double val2 = doubleStack.pop();
                 System.out.println("val2 = " + val2);
                 System.out.println(c);
                 calculator.verifOperation(new Operator(c), val1, val2);
-
-
                 double res = calculator.calculate(new Operator(c),val1,val2);
                 System.out.println("res = " + res);
                 doubleStack.push(res);
