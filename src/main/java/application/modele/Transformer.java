@@ -24,6 +24,7 @@ public class Transformer {
 
     public String infixToPostfix(String s) throws RequeteException, EmptyStackException {
         System.out.println("begin infixToPostfix");
+        s = s.replaceAll(" ", "");
         s = s.replaceAll("(\\+|-|\\*|/)", " $1 ");
         requete= calculator.verifRequete(s);
         String postfix = "";
