@@ -4,7 +4,6 @@ import application.modele.Transformer;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestCalculs {
 
@@ -29,13 +28,7 @@ public class TestCalculs {
         assertEquals(757,transformer.postfixToEvaluation("100 200 + 2 / 5 * 7 +"));
         assertEquals(91,transformer.postfixToEvaluation("1 1  9+  9*+"));
         assertEquals(7300,transformer.postfixToEvaluation("10  1  9+  9*  9*  9*+"));
-
-        //test exception
-
-
-
-
-
+        
     }
 
 }

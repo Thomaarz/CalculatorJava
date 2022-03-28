@@ -9,8 +9,6 @@ public class Calculator {
 
 	public Calculator(){}
 
-
-
 	public String verifRequete(String s) throws RequeteException {
 		String newRequete = "";
 		for (int i = 0; i <s.length() ; i++) {
@@ -44,7 +42,7 @@ public class Calculator {
 	}
 
 	public void verifOperation(Operator p, double x, double y) throws CalculException {
-		if(p.getSymbol() == '/' && x==0.0){
+		if(p.getSymbol() == '/' && x == 0.0){
 			throw new CalculException();
 		}
 	}

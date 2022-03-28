@@ -19,8 +19,6 @@ public class Operator {
 		return priority;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "Operator{" +

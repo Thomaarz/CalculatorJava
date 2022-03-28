@@ -27,15 +27,15 @@ public class Transformer {
         for (int i = 0; i <requete.length() ; i++) {
             char c = requete.charAt(i);
             if(calculator.priority(c)>0){
-                while(operatorStack.isEmpty()==false &&
-                        calculator.priority(operatorStack.peek().getSymbol())>= calculator.priority(c)){
+                while(!operatorStack.isEmpty() &&
+                        calculator.priority(operatorStack.peek().getSymbol()) >= calculator.priority(c)){
                     char pa = operatorStack.pop().getSymbol();
                     postfix += pa;
                 }
                 operatorStack.push(new Operator(c));
-            }else if(c==')'){
+            } else if(c==')') {
                 Operator x = operatorStack.pop();
-                while(x.getSymbol()!='('){
+                while(x.getSymbol()!='(') {
                     postfix += x.getSymbol();
                     x = operatorStack.pop();
                 }
