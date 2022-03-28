@@ -7,11 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestCalculs {
 
-    public static void main(String[] args) throws RequeteException {
-        Transformer transformer = new Transformer();
-        System.out.println(transformer.infixToPostfix("1+2+6+9*45+5/5"));
-    }
-
     @Test
     public void testCalculs() throws RequeteException, CalculException {
         Transformer transformer = new Transformer();
@@ -21,10 +16,10 @@ public class TestCalculs {
         assertEquals("1120",transformer.infixToPostfix("1120"));
 
         //pas de parenthese
-        assertEquals("1  2 + 6 + 9  45 *+ 5  5/+", transformer.infixToPostfix("1+2+6+9*45+5/5"));
+        assertEquals("12+6+945*+55/+", transformer.infixToPostfix("1+2+6+9*45+5/5"));
 
         //1 niveau de parenthese
-        assertEquals("1  1  9+  9*+",transformer.infixToPostfix("1 +(1 + 9) * 9"));
+        assertEquals("1 1  9+  9*+",transformer.infixToPostfix("1 +(1 + 9) * 9"));
 
         //1 niveau de parenthese
         assertEquals("10  1  9+  9*  9*  9*+",transformer.infixToPostfix("10 + (((1 + 9) * 9) * 9) * 9"));
