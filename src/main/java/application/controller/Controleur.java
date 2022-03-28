@@ -176,9 +176,7 @@ public class Controleur implements Initializable {
                 + "		Soustraction : -  "
                 + "		Division : / \n"
                 + "		Parentheses ( )  "
-                + "		exponentielle ^ \n"
-                + " Veuillez insérer un espace entre les symboles et les chiffres exemple : 1 + 1 \n"
-                + " Veuillez coller les symboles entre eux exemple : 1 -- 1 ");
+                + "		exponentielle ^ ");
     }
 
     public void Erreur(String s){
