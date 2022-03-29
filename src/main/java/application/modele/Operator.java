@@ -7,7 +7,8 @@ public class Operator {
 	
 	public Operator(char symbol) {
 		this.symbol = symbol;
-		this.priority = symbol == '+' || symbol == '-' ? 1 : symbol == '*' || symbol == '/' ? 2 : 0;
+		this.priority = symbol == '+' || symbol == '-' ? 1 : symbol == '*' || symbol == '/' || symbol == '(' || symbol == ')' ? 2
+				: symbol == '^' ? 3 : 0;
 	}
 
 	public char getSymbol() {
@@ -16,5 +17,13 @@ public class Operator {
 
 	public int getPriority() {
 		return priority;
+	}
+
+	@Override
+	public String toString() {
+		return "Operator{" +
+				"symbol=" + symbol +
+				", priority=" + priority +
+				'}';
 	}
 }
